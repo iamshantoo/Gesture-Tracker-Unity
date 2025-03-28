@@ -507,7 +507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Thanks for experiencing!
+  m_text: Thanks! Bye...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2241,7 +2241,7 @@ MonoBehaviour:
   - {fileID: 1998391880}
   - {fileID: 531671877}
   - {fileID: 2071224517}
-  swipeCooldown: 0.5
+  swipeCooldown: 1
 --- !u!1 &1548602375
 GameObject:
   m_ObjectHideFlags: 0
