@@ -4,6 +4,7 @@ using UnityEngine;
 using WebSocketSharp;
 using System.Threading;
 using WebSocketSharp.Server;
+using PimDeWitte.UnityMainThreadDispatcher;
 
 public class WebSocketHandler : MonoBehaviour
 {
@@ -32,8 +33,14 @@ public class GestureBehavior: WebSocketBehavior
 {
     protected override void OnMessage(MessageEventArgs e)
     {
-        // Log the received gesture
-        Debug.Log($"Received gesture: {e.Data}");
+        string gesture = e.Data.Trim(); // Clean up data
+        Debug.Log($"Received gesture: '{gesture}'");
+
+        // Run UI updates on the main thread
+        UnityMainThreadDispatcher.Instance().Enqueue(() =>
+        {
+            UIManager.Instance.ActivateImage(gesture);
+        });
 
         // Optionally, send a response back to the client
         Send($"Gesture {e.Data} received by Unity!");
