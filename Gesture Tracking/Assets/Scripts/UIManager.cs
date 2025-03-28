@@ -1,13 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using System.Collections;
-using System;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject swipeLeftImage;
-    public GameObject swipeRightImage;
+    public List<GameObject> images;
+    private int currentIndex = 0;
 
     #region Singleton
 
@@ -29,41 +29,50 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        // Ensure both images are initially disabled
-        swipeLeftImage.SetActive(false);
-        swipeRightImage.SetActive(false);
+        UpdateImageDisplay();
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ActivateImage("Swipe Left");
-        }
-    }
-
 
     public void ActivateImage(string gesture)
     {
-        swipeLeftImage.SetActive(false);
-        swipeRightImage.SetActive(false);
-
         if (gesture.Trim().Equals("Swipe Left", StringComparison.OrdinalIgnoreCase))
         {
-            Debug.Log("Swipe Left detected, activating image.");
-            StartCoroutine(DelayedActivation(swipeLeftImage));
+            SwipeLeft();
         }
         else if (gesture.Trim().Equals("Swipe Right", StringComparison.OrdinalIgnoreCase))
         {
-            Debug.Log("Swipe Right detected, activating image.");
-            StartCoroutine(DelayedActivation(swipeRightImage));
+            SwipeRight();
+        }
+        else
+        {
+            Debug.LogWarning($"Unknown gesture received: '{gesture}'");
         }
     }
 
-    IEnumerator DelayedActivation(GameObject image)
+    private void SwipeLeft()
     {
-        yield return new WaitForSeconds(0.1f);
-        image.SetActive(true);
-        Debug.Log($"{image.name} is now active.");
+        if (currentIndex > 0)
+        {
+            currentIndex--;
+            Debug.Log("Swiped Left, showing previous image.");
+            UpdateImageDisplay();
+        }
+    }
+
+    private void SwipeRight()
+    {
+        if (currentIndex < images.Count - 1)
+        {
+            currentIndex++;
+            Debug.Log("Swiped Right, showing next image.");
+            UpdateImageDisplay();
+        }
+    }
+
+    private void UpdateImageDisplay()
+    {
+        for (int i = 0; i < images.Count; i++)
+        {
+            images[i].SetActive(i == currentIndex);
+        }
     }
 }
